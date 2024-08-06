@@ -1,0 +1,157 @@
+
+{% load static %}
+
+<html>
+<title>{%block title %}todo | home {% endblock %}</title>
+
+<style>
+    :root {
+        --primary-color: #4CAF50;
+        --primary-hover: #3e8e41;
+        --danger-color: #ff0000;
+        --danger-hover: #cc0000;
+        --background-color: #f0f0f0;
+        --container-bg: #fff;
+        --border-color: #ddd;
+        --completed-color: #999;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: var(--background-color);
+    }
+    .container {
+        max-width: 600px;
+        margin: 40px auto;
+        min-height: 450px;
+        padding: 20px;
+        background-color: var(--container-bg);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .header h1 {
+        font-size: 24px;
+        margin: 0;
+    }
+    .input-group {
+        display: flex;
+        padding: 10px;
+    }
+    .input-group input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+    .input-group button {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .input-group button:hover {
+        background-color: var(--primary-hover);
+    }
+    .todo-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .todo-list li {
+        padding: 10px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .todo-list li:last-child {
+        border-bottom: none;
+    }
+    .todo-list li.completed {
+        text-decoration: line-through;
+        color: var(--completed-color);
+    }
+    .todo-list li button {
+        background-color: var(--danger-color);
+        color: #fff;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        visibility: hidden;
+    }
+    .todo-list li:hover button {
+        visibility: visible;
+    }
+    .todo-list li button:hover {
+        background-color: var(--danger-hover);
+    }
+    .delete-all-btn {
+        background-color: var(--danger-color);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .delete-all-btn:hover {
+        background-color: var(--danger-hover);
+    }
+    h2 {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container">
+        <header class="header">
+            <h1>Todo List App</h1>
+            <button class="delete-all-btn" aria-label="Delete all todos">Delete All</button>
+        </header>
+        <div class="input-group">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button id="add-btn" class="btn btn-add" aria-label="Add todo">+</button>
+            </form>
+        </div>
+        
+        <ul id="todo-list" class="todo-list">
+            <li>
+                {% for item in items %}
+                        <span><a href="{% url 'Todo:todo_details' item.pk %}">{{ item.title }}<a></span>
+                        <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
+                            {% csrf_token %}
+                            <button type="button" class="delete-btn" aria-label="Delete todo">Delete</button>
+                        </form>
+                {% endfor %}
+                <h2>Completed Items:</h2>
+                {% for item in items %}
+                        {% if item.is_completed %}
+                        <ul id="completed-list" class="todo-list">
+                            <li>
+                                <span><a href="{% url 'Todo:todo_details' item.pk %}">{{ item.title }}<a></span>
+                                <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
+                                   {% csrf_token %}
+                                   <button type="button" class="delete-btn" aria-label="Delete todo">Delete</button>
+                                </form>
+                            </li>
+                        </ul>
+                        {% endif %}
+                {% endfor %}
+            </li>
+        </ul>
+    </div>

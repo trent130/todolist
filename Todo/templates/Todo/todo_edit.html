@@ -1,0 +1,17 @@
+{% comment %} {% extends "base.html" %}
+{% load static %}
+
+<html>
+<title>{%block title %}todo | edit {% endblock %}</title> {% endcomment %}
+{% comment %} 
+{% block content %} {% endcomment %}
+    <div class="container mt-4">
+        <p>Edit</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary" value="">edit</button>
+        </form>
+        <a href="{% url 'todo_list' %}">back to list</a>
+    </div>
+{% comment %} {% endblock %} {% endcomment %}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Todo List App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #todo-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        #todo-input {
+            padding: 10px;
+            width: 300px;
+        }
+        #add-btn {
+            padding: 10px;
+        }
+        #todo-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #fff;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: gray;
+        }
+        .todo-item button {
+            margin-left: 10px;
+        }
+        #delete-all-btn {
+            margin-top: 20px;
+            padding: 10px;
+            display: block;
+            width: 100%;
+        }
+        #task-count {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Advanced Todo List</h1>
+    <div id="todo-form">
+        <input type="text" id="todo-input" placeholder="Add a new task...">
+        <button id="add-btn">Add</button>
+    </div>
+    <ul id="todo-list"></ul>
+    <button id="delete-all-btn">Delete All</button>
+    <div id="task-count">Tasks remaining: <span id="remaining-count">0</span></div>
+
+    <script>
+        const todoInput = document.getElementById('todo-input');
+        const addBtn = document.getElementById('add-btn');
+        const todoList = document.getElementById('todo-list');
+        const deleteAllBtn = document.getElementById('delete-all-btn');
+        const remainingCount = document.getElementById('remaining-count');
+
+        addBtn.addEventListener('click', addTodo);
+        deleteAllBtn.addEventListener('click', deleteAllTodos);
+        document.addEventListener('DOMContentLoaded', loadTodos);
+
+        function loadTodos() {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            todos.forEach(todo => {
+                addTodoToDOM(todo.text, todo.completed);
+            });
+            updateTaskCount();
+        }
+
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+            if (todoText === '') return;
+
+            addTodoToDOM(todoText, false);
+            saveTodoToLocalStorage(todoText, false);
+            todoInput.value = '';
+        }
+
+        function addTodoToDOM(text, completed) {
+            const li = document.createElement('li');
+            li.className = `todo-item ${completed ? 'completed' : ''}`;
+            li.innerHTML = `
+                <span onclick="toggleComplete(this)">${text}</span>
+                <div>
+                    <button onclick="editTodo(this)">Edit</button>
+                    <button onclick="deleteTodo(this)">Delete</button>
+                </div>
+            `;
+            todoList.appendChild(li);
+            updateTaskCount();
+        }
+
+        function toggleComplete(span) {
+            const li = span.parentElement.parentElement;
+            const isCompleted = li.classList.toggle('completed');
+            const todoText = span.textContent;
+
+            updateLocalStorage(todoText, isCompleted);
+            updateTaskCount();
+        }
+
+        function editTodo(button) {
+            const li = button.parentElement.parentElement;
+            const span = li.querySelector('span');
+            const newTodoText = prompt('Edit your task:', span.textContent);
+            if (newTodoText !== null && newTodoText.trim() !== '') {
+                const isCompleted = li.classList.contains('completed');
+                li.remove();
+                updateLocalStorage(span.textContent, false, true);
+                addTodoToDOM(newTodoText.trim(), isCompleted);
+            }
+        }
+
+        function deleteTodo(button) {
+            const li = button.parentElement.parentElement;
+            const todoText = li.querySelector('span').textContent;
+            li.remove();
+            removeTodoFromLocalStorage(todoText);
+            updateTaskCount();
+        }
+
+        function deleteAllTodos() {
+            todoList.innerHTML = '';
+            localStorage.removeItem('todos');
+            updateTaskCount();
+        }
+
+        function saveTodoToLocalStorage(text, completed) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            todos.push({ text, completed });
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        function updateLocalStorage(text, completed, isEdit = false) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            const index = todos.findIndex(todo => todo.text === text);
+            if (isEdit) {
+                todos.splice(index, 1);
+            }
+            todos.push({ text, completed });
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        function removeTodoFromLocalStorage(text) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            const updatedTodos = todos.filter(todo => todo.text !== text);
+            localStorage.setItem('todos', JSON.stringify(updatedTodos));
+        }
+
+        function updateTaskCount() {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            const remaining = todos.filter(todo => !todo.completed).length;
+            remainingCount.textContent = remaining;
+        }
+    </script>
+
+</body>
+</html>

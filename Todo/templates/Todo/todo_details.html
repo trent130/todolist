@@ -1,0 +1,15 @@
+{% comment %} {% extends "base.html" %}
+{% load static %} {% endcomment %}
+
+{% comment %} <title>{% block title%}home | {item.title}{% endblock %}</title> {% endcomment %}
+
+{% comment %} {% block content %} {% endcomment %}
+    <div class="container mt-4">
+        <p>{{item.title}}</p>
+        <p>{{item.description}}</p>
+        <p> Due date:{{item.due_date}}</p>
+        <p>completed?{{item.completed}}
+        <a href="{% url 'edit_todo' item.pk %}">edit</a>
+        <a href="{% url 'todo_list' %}">back to todo list</a>
+    </div>
+{% comment %} {% endblock %} {% endcomment %}
