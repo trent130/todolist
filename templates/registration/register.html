@@ -3,146 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List App</title>
-    <style>
-        /* Add some basic styling to make the app look decent */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .todo-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .todo-list li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        .todo-list li:last-child {
-            border-bottom: none;
-        }
-        .todo-list li.completed {
-            text-decoration: line-through;
-            color: #999;
-        }
-        .todo-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-        .btn {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #3e8e41;
-        }
-        .delete-btn {
-            background-color: #ff0000;
-            color: #fff;
-        }
-        .delete-btn:hover {
-            background-color: #cc0000;
-        }
-    </style>
+    <title>Register page</title>
+
 </head>
 <body>
     <div class="container">
-        <h1>Todo List App</h1>
-        <input type="text" id="todo-input" class="todo-input" placeholder="Add new todo">
-        <button id="add-btn" class="btn">Add</button>
-        <button id="delete-all-btn" class="btn delete-btn">Delete All</button>
-        <ul id="todo-list" class="todo-list">
-            <!-- Todo list items will be rendered here -->
-        </ul>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">register</button>
+        </form>
     </div>
-
-    <script>
-        // Get the todo list element
-        const todoList = document.getElementById('todo-list');
-
-        // Get the add button element
-        const addBtn = document.getElementById('add-btn');
-
-        // Get the delete all button element
-        const deleteAllBtn = document.getElementById('delete-all-btn');
-
-        // Get the todo input element
-        const todoInput = document.getElementById('todo-input');
-
-        // Initialize an empty array to store the todo list items
-        let todoItems = [];
-
-        // Function to add a new todo item
-        function addTodoItem() {
-            const todoText = todoInput.value.trim();
-            if (todoText !== '') {
-                todoItems.push({ text: todoText, completed: false });
-                renderTodoList();
-                todoInput.value = '';
-            }
-        }
-
-        // Function to delete a todo item
-        function deleteTodoItem(index) {
-            todoItems.splice(index, 1);
-            renderTodoList();
-        }
-
-        // Function to delete all todo items
-        function deleteAllTodoItems() {
-            todoItems = [];
-            renderTodoList();
-        }
-
-        // Function to edit a todo item
-        function editTodoItem(index, newText) {
-            todoItems[index].text = newText;
-            renderTodoList();
-        }
-
-        // Function to render the todo list
-        function renderTodoList() {
-            todoList.innerHTML = '';
-            todoItems.forEach((todoItem, index) => {
-                const todoListItem = document.createElement('li');
-                todoListItem.textContent = todoItem.text;
-                if (todoItem.completed) {
-                    todoListItem.classList.add('completed');
-                }
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.onclick = () => deleteTodoItem(index);
-                todoListItem.appendChild(deleteBtn);
-                todoList.appendChild(todoListItem);
-            });
-        }
-
-        // Add event listeners
-        addBtn.addEventListener('click', addTodoItem);
-        deleteAllBtn.addEventListener('click', deleteAllTodoItems);
-        todoInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                addTodoItem();
-            }
-        });
-
-        // Render the initial todo list
-        renderTodoList();
-    </script>
 </body>
 </html>

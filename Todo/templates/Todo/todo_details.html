@@ -9,7 +9,7 @@
         <p>{{item.description}}</p>
         <p> Due date:{{item.due_date}}</p>
         <p>completed?{{item.completed}}
-        <a href="{% url 'edit_todo' item.pk %}">edit</a>
-        <a href="{% url 'todo_list' %}">back to todo list</a>
+        <a href="{% url 'Todo:edit_todo' item.pk %}">edit</a>
+        <a href="{% url 'Todo:todo_list' %}">back to todo list</a>
     </div>
 {% comment %} {% endblock %} {% endcomment %}
