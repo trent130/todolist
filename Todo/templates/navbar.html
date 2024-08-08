@@ -1,0 +1,47 @@
+{% load static %}
+<header class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <h1 class="navbar-brand mb-0 h1">to do list</h1>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Todo:todo_list' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" aria-disabled="true">Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Help</a>
+                </li>
+            </ul>
+
+              {% if request.user.is_authenticated %}
+                          <li>
+                              <form action="{% url 'Todo:logout' %}" method="post">
+                                  {% csrf_token %}
+                                  <button type="submit">
+                                      <i class="fas fa-sign-out-alt me-2"></i>
+                                      Log out
+                                  </button>
+                              </form>
+                          </li>
+              {% else %}
+                  <a class="nav-link" href="{% url 'Todo:login' %}">Login</a>
+                  <a class="nav-link" href="{% url 'Todo:register' %}">Register</a>
+              {% endif %}
+          </div>
+      </div>
+  </div>
+</header>

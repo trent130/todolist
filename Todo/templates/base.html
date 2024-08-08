@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}?{% now 'u' %}">
+    <!--<link rel="stylesheet" href="{% static 'css/fontawesome-free-6.5.1-web/css/all.min.css' %}?{% now 'u' %}">-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?{% now 'U' %}">
+    <!-- <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    -->
+
+</head>
+
+<body>
+    {% include "navbar.html" %}     
+        {% block content %}
+        <!-- Default content for child templates -->
+        {% endblock %}
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %}?{% now 'U' %}"></script>
+
+</body>
+
+</html>

@@ -1,9 +1,11 @@
-
+{% extends "base.html" %}
 {% load static %}
 
 <html>
-<title>{%block title %}todo | home {% endblock %}</title>
+<title>{% block title %}todo | home {% endblock %}</title>
 
+
+{% block style %}
 <style>
     :root {
         --primary-color: #4CAF50;
@@ -116,43 +118,49 @@
         margin-top: 20px;
     }
 </style>
+{% endblock style %}
+    
 
+{% block content %}
+    
 <div class="container">
-        <header class="header">
-            <h1>Todo List App</h1>
-            <button class="delete-all-btn" aria-label="Delete all todos">Delete All</button>
-        </header>
-        <div class="input-group">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button id="add-btn" class="btn btn-add" aria-label="Add todo">+</button>
-            </form>
-        </div>
-        
-        <ul id="todo-list" class="todo-list">
-            <li>
-                {% for item in items %}
-                        <span><a href="{% url 'Todo:todo_details' item.pk %}">{{ item.title }}<a></span>
-                        <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
-                            {% csrf_token %}
-                            <button type="button" class="delete-btn" aria-label="Delete todo">Delete</button>
-                        </form>
-                {% endfor %}
-                <h2>Completed Items:</h2>
-                {% for item in items %}
-                        {% if item.is_completed %}
-                        <ul id="completed-list" class="todo-list">
-                            <li>
-                                <span><a href="{% url 'Todo:todo_details' item.pk %}">{{ item.title }}<a></span>
-                                <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
-                                   {% csrf_token %}
-                                   <button type="button" class="delete-btn" aria-label="Delete todo">Delete</button>
-                                </form>
-                            </li>
-                        </ul>
-                        {% endif %}
-                {% endfor %}
-            </li>
-        </ul>
+    <header class="header">
+        <h1>Todo List App</h1>
+        <button class="delete-all-btn" aria-label="Delete all todos">Delete All</button>
+    </header>
+    <div class="input-group">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button id="add-btn" class="btn btn-add" aria-label="Add todo">+</button>
+        </form>
     </div>
+    
+    <ul id="todo-list" class="todo-list">
+        <li>
+            {% for item in items %}
+                    <span><a href="{% url 'Todo:todo_details' item.pk %}">{{ item.title }}<a></span>
+                    <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
+                        {% csrf_token %}
+                        <button type="button" class="delete-btn" aria-label="Delete todo">Delete</button>
+                    </form>
+            {% endfor %}
+            <h2>Completed Items:</h2>
+            {% for item in items %}
+                    {% if item.is_completed %}
+                    <ul id="completed-list" class="todo-list">
+                        <li>
+                            <span><a href="{% url 'Todo:todo_details' item.pk %}">{{ item.title }}<a></span>
+                            <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
+                               {% csrf_token %}
+                               <button type="button" class="delete-btn" aria-label="Delete todo">Delete</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% endif %}
+            {% endfor %}
+        </li>
+    </ul>
+</div>
+{% endblock content %}
+    
