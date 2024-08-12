@@ -2,7 +2,7 @@
 {% load static %}
 
 <html>
-<title>{%block title %}todo | edit {% endblock %}</title>
+<title>{%block title %}todo | edit  {% endblock %}</title>
 
 {% block content %}
 <div class="container mt-4">
@@ -14,5 +14,4 @@
     </form>
     <a href="{% url 'Todo:todo_list' %}" class="btn btn-secondary mt-3">Back to List</a>
   </div>
-  
 {% endblock %}

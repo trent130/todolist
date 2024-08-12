@@ -16,7 +16,7 @@ class todoForm(forms.ModelForm):
         
         widgets = {
             "title": forms.TextInput(attrs={"class":"form-control", "placeholder":"Enter your title here"}),
-            "description": forms.Textarea(attrs={"class":"form-control", "placeholder":"Add a new task...", "rows":5}),
+            "description": forms.Textarea(attrs={"class":"form-control", "placeholder":"Add a new task description...", "rows":5}),
             "due_date": forms.DateInput(attrs={"class":"form-control", "type":"date"}),
             "completed": forms.CheckboxInput(attrs={"class":"form-check-input",}),
         }

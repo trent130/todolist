@@ -37,15 +37,18 @@ def todo_list(request):
     if request.method == "POST":
         form = todoForm(request.POST)
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+            task.user = request.user
+            task.save()
             messages.success(request, "form has successfully been submitted")
             return  HttpResponseRedirect(reverse("Todo:todo_list"))
         else:
             messages.error(request, "invalid form")
     else:
         form = todoForm()  
-    items = TodoItem.objects.all()
-    context = {"title":"todo_list", "items":items, "form":form}
+    items = TodoItem.objects.filter(completed=False, user=request.user)
+    completed_items = TodoItem.objects.filter(completed=True, user=request.user)
+    context = {"title":"todo_list", "items":items, "form":form, "completed_items":completed_items}
     return render(request,"Todo/todo_list.html", context)
 
 @login_required
@@ -75,3 +78,9 @@ def delete_todo(request, pk):
     item = get_object_or_404(TodoItem, pk=pk)
     item.delete()
     return HttpResponseRedirect(reverse("Todo:todo_list")) 
+
+@login_required
+def delete_all_todo(request):
+    delete_items = TodoItem.objects.all()
+    delete_items.clear()
+    return HttpResponseRedirect(reverse("Todo:todo_list"))
