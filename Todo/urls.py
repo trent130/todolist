@@ -1,6 +1,7 @@
 from django.urls import path
-from. import views
+from . import views
 from django.contrib.auth import views as auth_views
+from Todo.views import UserProfileView
 
 app_name = "Todo"
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path("reset/<uuidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path("todo/delete/", views.delete_all_todo, name="delete_all_todo"),
+    path("user_profile/", UserProfileView.as_view(), name="user_profile"),
 ]

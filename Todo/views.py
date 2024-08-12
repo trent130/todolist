@@ -1,11 +1,14 @@
 from django.shortcuts import render, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from Todo.forms import todoForm, registerForm
+from Todo.forms import todoForm, registerForm, userprofileForm
 from django.contrib import messages
-from .models import TodoItem
+from .models import TodoItem,UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+
 
 # Create your views here.
 def registerview(request):
@@ -84,3 +87,25 @@ def delete_all_todo(request):
     delete_items = TodoItem.objects.all()
     delete_items.clear()
     return HttpResponseRedirect(reverse("Todo:todo_list"))
+
+class UserProfileView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        form = userprofileForm(instance=user_profile)
+        
+        context = {'user_profile': user_profile, 'form': form}
+        return render(request, "Todo/userprofile.html", context)
+    
+    def post(self, request, *args, **kwargs):
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        form = userprofileForm(request.POST, request.FILES, instance=user_profile)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated")
+            return HttpResponseRedirect(reverse("Todo:user_profile"))
+        
+        context = {'user_profile': user_profile, 'form': form}
+        return render(request, "Todo/userprofile.html", context)
+
+    

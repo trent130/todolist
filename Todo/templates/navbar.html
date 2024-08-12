@@ -25,7 +25,8 @@
           </li>
         </ul>
         {% if request.user.is_authenticated %}
-          <form class="d-flex" action="{% url 'Todo:logout' %}" method="post">
+        <span class="ms-4 vlink">Hello, <a href="{% url 'Todo:user_profile' %}"><strong style="text-transform: uppercase; font-size:small; font: 1em Ariel, helvetica, sans-serif;">{{ request.user.username }}</strong></a></span>
+          <form class="d-flex ms-2" action="{% url 'Todo:logout' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-outline-danger">
               <i class="fas fa-sign-out-alt me-2"></i>

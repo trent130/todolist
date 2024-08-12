@@ -148,3 +148,12 @@ label {
     height: 36px !important;
   }
 }
+
+.vlink a{
+  text-decoration: none;
+  color: #000000;
+}
+
+.vlink a:hover{
+  color:#495057;
+}

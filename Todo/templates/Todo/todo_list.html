@@ -23,41 +23,65 @@
             </div>
         </form>
     </div>
+    <div class="mt-4">
+        <h2 class="mt-4" data-bs-toggle="collapse" data-bs-target="#completed-list" aria-expanded="false" aria-controls="completed-list" style="cursor: pointer;">
+            Completed Items <span class="badge bg-secondary">{{ completed_items.count }}</span>
+        </h2>
+        <ul id="completed-list" class="list-group collapse">
+            {% for item in completed_items %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><a href="{% url 'Todo:todo_details' item.pk %}" class="me-auto">{{ item.title }}</a></span>
+                    <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger delete-btn" aria-label="Delete todo">Delete</button>
+                    </form>
+                </li>
+            {% empty %}
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="alert alert-info text-center mb-4" role="alert">
+                            <h4 class="alert-heading">No Completed Todos!</h4>
+                            <p>Your completed todo list is currently empty. Once you complete tasks, they will appear here.</p>
+                            <hr>
+                            <p class="mb-0">Keep up the great work!</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </ul>
+    </div>
     
+    <h2 class="mt-4">Todo Items:</h2>
     <ul id="todo-list" class="list-group mt-3">
         {% for item in items %}
-            <li class="list-group-item d-flex justify-content-between justify-content-center">
-                <span><a href="{% url 'Todo:todo_details' item.pk %}" class="me-auto">{{ item.title }}<a></span>
-                <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger delete-btn" aria-label="Delete todo">Delete</button>
-                </form>
-            </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="flex-grow-1">
+                <a href="{% url 'Todo:todo_details' item.pk %}" class="text-decoration-none text-dark">{{ item.title }}</a>
+            </span>
+            <form method="post" action="{% url 'Todo:delete_todo' item.pk %}" class="ms-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm" aria-label="Delete todo">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </form>
+        </li>
+        
         {% empty %}
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="card-text">The todo list is empty!!</div>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="alert alert-info text-center mb-4" role="alert">
+                        <h4 class="alert-heading">No Completed Todos!</h4>
+                        <p>Your completed todo list is currently empty. Once you complete tasks, they will appear here.</p>
+                        <hr>
+                        <p class="mb-0">Keep up the great work!</p>
                     </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
+        
     </ul>
     
-    <h2 class="mt-4">Completed Items:</h2>
-    <ul id="completed-list" class="list-group">
-        {% for item in completed_items %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span><a href="{% url 'Todo:todo_details' item.pk %}" class="me-auto" >{{ item.title }}<a></span>
-                <form method="post" action="{% url 'Todo:delete_todo' item.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger delete-btn" aria-label="Delete todo">Delete</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
 </div>
 
     

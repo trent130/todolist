@@ -1,5 +1,5 @@
 from django import forms
-from .models import TodoItem
+from .models import TodoItem, UserProfile
 from django.contrib.auth.models import User
 
 class todoForm(forms.ModelForm):
@@ -44,4 +44,9 @@ class registerForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match")
         return password2
+
+class userprofileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = "__all__"
             
