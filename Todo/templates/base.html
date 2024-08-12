@@ -10,17 +10,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?{% now 'U' %}">
     <!-- <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css" integrity="sha512-Kq8Gxu5l5L6Zdj7Tv+W1R7gAwW5R5TdK8mjzH+GnCWtpH/qj3Kk3Ir0teEJhI4gU/W6iY/6JcDyNtvb87vUHg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 
 <body>
-    {% include "navbar.html" %}     
+    {% include "navbar.html" %} 
+        
+         
         {% block content %}
         <!-- Default content for child templates -->
         {% endblock %}
 
     <!-- Bootstrap 5 JavaScript -->
-    <script src="{% static 'js/bootstrap.min.js' %}?{% now 'U' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}?{% now 'U' %}"></script>
 
 </body>
 

@@ -19,11 +19,21 @@
         <div class='login-container'>
             <div class='login-area'>
                 <h3>LOGIN TO REDX</h3>
-                <form class='login-items' href="{% url 'Todo:login' %}">
+                <form class="login-items mt-4 needs-validation" novalidate action="{% url 'Todo:login' %}" method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" class='login-btn' value="Login" />
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        {{ form.username.errors }}
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Password</label>
+                        {{ form.password.errors }}
+                        {{ form.password }}
+                    </div>
+                    <button type="submit" class="btn btn-primary login-btn">Login</button>
                 </form>
+                
                 <p class='p'>New to RedX? <a class='a' href="{% url 'Todo:register' %}">Create an Account</a></p>
                 <p class='p'>Forgot password? <a href="{% url 'Todo:password_reset' %}" class='a'>Reset Password</a></p>
                 <div class='social-login-container'>

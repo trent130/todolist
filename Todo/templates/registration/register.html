@@ -19,11 +19,33 @@
         <div class='login-container'>
             <div class='login-area'>
                 <h3>REGISTER TO REDX</h3>
-                <form class='login-items' href="{% url 'Todo:register' %}">
+                {% include "alert.html" %}
+                <form class="register-items mt-4 needs-validation" novalidate action="{% url 'Todo:register' %}" method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" class='login-btn' value="Register" />
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        {{ form.username.errors }}
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        {{ form.email.errors }}
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password1" class="form-label">Password</label>
+                        {{ form.password1.errors }}
+                        {{ form.password1 }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password2" class="form-label">Confirm Password</label>
+                        {{ form.password2.errors }}
+                        {{ form.password2 }}
+                    </div>
+                    <button type="submit" class="btn btn-primary register-btn">Register</button>
                 </form>
+                
+                
                 <p class='p'>Already have an account?
                     <a class='a' href="{% url 'Todo:login' %}">Login</a>
                 </p>

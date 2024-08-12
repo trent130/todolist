@@ -1,10 +1,11 @@
 from django.shortcuts import render, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from .forms import todoForm, registerForm
+from Todo.forms import todoForm, registerForm
 from django.contrib import messages
 from .models import TodoItem
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 
 # Create your views here.
 def registerview(request):
@@ -14,18 +15,22 @@ def registerview(request):
             email = form.cleaned_data["email"]
             
             if User.objects.filter(email=email).exists():
-                messages.error(request, "user email already in use")
+                messages.error(request, "User email already in use")
                 return HttpResponseRedirect(reverse("Todo:register"))
-            else:
-                messages.success(request, "registration successful")
-                login(request, user)
-                return HttpResponseRedirect(reverse("Todo:todo_list"))
+            
+            user = form.save(commit=False)  # Don't save yet
+            user.set_password(form.cleaned_data["password1"])  # Set the password
+            user.save()  # Now save the user
+            messages.success(request, "Registration successful")
+            login(request, user)  # Log the user in
+            return HttpResponseRedirect(reverse("Todo:todo_list"))
         else:
-            messages.error(request, "invalid form")
+            messages.error(request, "Invalid form")
     else:        
         form = registerForm()
-    context={"title":"register", "form":form}
+    context = {"title": "Register", "form": form}
     return render(request, "registration/register.html", context)
+
             
 @login_required
 def todo_list(request):

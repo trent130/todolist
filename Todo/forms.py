@@ -21,11 +21,27 @@ class todoForm(forms.ModelForm):
             "completed": forms.CheckboxInput(attrs={"class":"form-check-input",}),
         }
 
+
 class registerForm(forms.ModelForm):
-    password1 = forms.CharField(widget=forms.PasswordInput(), max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput(), max_length=150)
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter your password"}), max_length=150)
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm your password"}), max_length=150, label="Confirm Password")
     
     class Meta:
         model = User
-        fields = ["username", "email", "password", "password1"]
+        fields = ["username", "email", "password1", "password2"]
+    
+    widgets = {
+        "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter your username"}),
+        "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter your email"}),
+        
+    }
+
+    def clean_password(self):
+        cleaned_data = self.cleaned_data
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+        
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords do not match")
+        return password2
             

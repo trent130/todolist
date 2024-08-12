@@ -119,8 +119,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 LOGIN_URL = "login/"
-LOGIN_REDIRECT_URL = "Todo:todo_list/"
-LOGOUT_REDIRECT_URL = "Todo:todo_list/"
+LOGIN_REDIRECT_URL = "Todo:todo_list"
+LOGOUT_REDIRECT_URL = "Todo:todo_list"
 
 STATICFILES_DIRS = [BASE_DIR/ 'static/']
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
