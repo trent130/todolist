@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>User Profile</h2>
+    <h2 class="text-center">User Profile</h2>
     <form method="post" enctype="multipart/form-data" action="{% url 'Todo:user_profile' %}" class="form-horizontal">
         {% csrf_token %}
         <div class="form-group">
@@ -26,8 +26,10 @@
             </div>
         </div>
         <div class="form-group  mt-2 ">
-            <div class="col-sm-offset-2 col-sm-10 d-flex align-items-center justify-content-between">
-                <input type="submit" value="update" class=" w-25 btn btn-primary">
+            <div class="col-sm-offset-2 col-sm-10 ">
+                <div class="d-flex justify-content-centre align-items-center">
+                    <input type="submit" value="update" class=" w-25 btn btn-primary">
+                </div>
             </div>
         </div>
     </form>

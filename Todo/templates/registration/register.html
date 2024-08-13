@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,12 +26,12 @@
                     <div class="mb-3">
                         <label for="id_username" class="form-label">Username</label>
                         {{ form.username.errors }}
-                        {{ form.username }}
+                        {{ form.username |add_class:"form-control"  }}
                     </div>
                     <div class="mb-3">
                         <label for="id_email" class="form-label">Email</label>
                         {{ form.email.errors }}
-                        {{ form.email }}
+                        {{ form.email |add_class:"form-control"  }}
                     </div>
                     <div class="mb-3">
                         <label for="id_password1" class="form-label">Password</label>
